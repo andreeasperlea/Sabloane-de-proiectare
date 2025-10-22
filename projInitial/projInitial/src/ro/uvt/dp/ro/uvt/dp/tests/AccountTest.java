@@ -1,4 +1,4 @@
-package ro.uvt.dp.test;
+package ro.uvt.dp.tests;
 
 import org.junit.jupiter.api.Test;
 

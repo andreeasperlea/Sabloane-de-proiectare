@@ -6,7 +6,7 @@ public class SavingsAccount extends Account {
 
     public SavingsAccount(String numarCont, double suma, CurrencyType type) {
         super(numarCont, suma, type);
-        LoggerConfig.logInfo("Created new SavingsAccount: " + numarCont + " with initial amount " + suma + " " + type);
+        LoggerConfig.getInstance().logInfo("Created new SavingsAccount: " + numarCont + " with initial amount " + suma + " " + type);
     }
 
     @Override
@@ -15,7 +15,7 @@ public class SavingsAccount extends Account {
         double bonusInterest = getAmount() * SAVINGS_BONUS_RATE / 100;
         double totalInterest = baseInterest + bonusInterest;
 
-        LoggerConfig.logInfo(
+        LoggerConfig.getInstance().logInfo(
                 "Calculated savings interest for account " + getAccountNumber() +
                 ": base=" + baseInterest +
                 ", bonus=" + bonusInterest +
@@ -33,7 +33,7 @@ public class SavingsAccount extends Account {
                 ", currency=" + getCurrencyType() +
                 ", dailyInterest=" + getInterest() +
                 '}';
-        LoggerConfig.logInfo("SavingsAccount info requested: " + info);
+        LoggerConfig.getInstance().logInfo("SavingsAccount info requested: " + info);
         return info;
     }
 }

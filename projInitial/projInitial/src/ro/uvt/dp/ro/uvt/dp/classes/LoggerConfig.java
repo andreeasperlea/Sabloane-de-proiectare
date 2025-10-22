@@ -1,54 +1,37 @@
 package ro.uvt.dp.classes;
 
-import java.io.IOException;
-import java.util.logging.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LoggerConfig {
-    private static final Logger logger = Logger.getLogger("BankLogger");
-    private static boolean isEnabled = false;
 
-    static {
-        try {
-            FileHandler fileHandler = new FileHandler("bank_debug.log", true);
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.addHandler(fileHandler);
-            logger.setLevel(Level.ALL);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static LoggerConfig instance;
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+
+    private LoggerConfig() {}
+
+    public static synchronized LoggerConfig getInstance() {
+        if (instance == null) {
+            instance = new LoggerConfig();
         }
+        return instance;
     }
 
-    private LoggerConfig() {} 
-
-    public static Logger getLogger() {
-        return logger;
+    public void logInfo(String message) {
+        System.out.println("[INFO]  " + now() + "  " + message);
     }
 
-    public static void enableLogging() {
-        isEnabled = true;
-        logger.info("Logging ENABLED");
+    public void logWarning(String message) {
+        System.out.println("[WARN]  " + now() + "  " + message);
     }
 
-    public static void disableLogging() {
-        logger.info("Logging DISABLED");
-        isEnabled = false;
+    public void logError(String message, Exception e) {
+        System.out.println("[ERROR] " + now() + "  " + message + " | Exception: " + e.getMessage());
     }
 
-    public static void logInfo(String message) {
-        if (isEnabled) {
-            logger.info(message);
-        }
-    }
-
-    public static void logWarning(String message) {
-        if (isEnabled) {
-            logger.warning(message);
-        }
-    }
-
-    public static void logError(String message, Throwable t) {
-        if (isEnabled) {
-            logger.log(Level.SEVERE, message, t);
-        }
+    private String now() {
+        return LocalDateTime.now().format(formatter);
     }
 }

@@ -6,7 +6,7 @@ public class InvestmentAccount extends Account {
 
     public InvestmentAccount(String numarCont, double suma, CurrencyType type) {
         super(numarCont, suma, type);
-        LoggerConfig.logInfo("Created new InvestmentAccount: " + numarCont + " with initial amount " + suma + " " + type);
+        LoggerConfig.getInstance().logInfo("Created new InvestmentAccount: " + numarCont + " with initial amount " + suma + " " + type);
     }
 
     @Override
@@ -15,7 +15,7 @@ public class InvestmentAccount extends Account {
         double investmentInterest = getAmount() * INVESTMENT_RATE / 100;
         double totalInterest = baseInterest + investmentInterest;
 
-        LoggerConfig.logInfo(
+        LoggerConfig.getInstance().logInfo(
                 "Calculated investment interest for account " + getAccountNumber() +
                 ": base=" + baseInterest +
                 ", extra=" + investmentInterest +
@@ -33,7 +33,7 @@ public class InvestmentAccount extends Account {
                 ", currency=" + getCurrencyType() +
                 ", dailyInterest=" + getInterest() +
                 '}';
-        LoggerConfig.logInfo("InvestmentAccount info requested: " + info);
+        LoggerConfig.getInstance().logInfo("InvestmentAccount info requested: " + info);
         return info;
     }
 }

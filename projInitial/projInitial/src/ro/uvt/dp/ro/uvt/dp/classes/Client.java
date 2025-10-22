@@ -8,38 +8,73 @@ public class Client {
     private String name;
     private String address;
     private ArrayList<Account> accounts;
+    private String dateOfBirth;
+    private String phone;
+    private String email;
 
-    public Client(String nume, String adresa, CurrencyType moneda, String numarCont, double suma) {
-        this.name = nume;
-        this.address = adresa;
-        this.accounts = new ArrayList<>();
-        LoggerConfig.logInfo("Created new client: " + name + " at address: " + address);
+    public Client(Builder builder) {
+        this.name = builder.name;
+        this.address = builder.address;
+        this.accounts = builder.accounts;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.phone = builder.phone;
+        this.email = builder.email;
+        LoggerConfig.getInstance().logInfo("Created new client: " + name + " at address: " + address);
     }
 
-    public void addAccount(CurrencyType moneda, String numarCont, double suma) {
-        if (accounts.size() >= NUMAR_MAX_CONTURI) {
-            LoggerConfig.logWarning("Client " + name + " tried to exceed max account limit (" + NUMAR_MAX_CONTURI + ")");
-            throw new IllegalStateException("Numarul maxim de conturi a fost atins");
+    public static class Builder {
+        private String name;
+        private String address;
+        private String dateOfBirth;
+        private String phone;
+        private String email;
+        private ArrayList<Account> accounts = new ArrayList<>();
+
+        public Builder(String name, String address) {
+            this.name = name;
+            this.address = address;
         }
-        Account c = createAccount(moneda, numarCont, suma);
-        accounts.add(c);
-        LoggerConfig.logInfo("Added new account " + numarCont + " (" + moneda + ", " + suma + ") for client " + name);
-    }
 
-    private Account createAccount(CurrencyType moneda, String numarCont, double suma) {
-        LoggerConfig.logInfo("Creating new account " + numarCont + " for client " + name);
-        return new Account(numarCont, suma, moneda);
+        public Builder dateOfBirth(String dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder addAccount(AccountFactory factory, CurrencyType currencyType, String accountNumber, double balance) {
+            if (accounts.size() >= Client.NUMAR_MAX_CONTURI) {
+                LoggerConfig.getInstance().logWarning("Client " + name + " tried to exceed max account limit (" + Client.NUMAR_MAX_CONTURI + ")");
+                throw new IllegalStateException("Numarul maxim de conturi a fost atins");
+            }
+            Account account = factory.createAccount(accountNumber, balance, currencyType);
+            accounts.add(account);
+            LoggerConfig.getInstance().logInfo("Added account to builder for " + name + ": " + accountNumber);
+            return this;
+        }
+
+        public Client build() {
+            return new Client(this);
+        }
     }
 
     public Account getAccount(String accountCode) {
-        LoggerConfig.logInfo("Client " + name + " requested account: " + accountCode);
+        LoggerConfig.getInstance().logInfo("Client " + name + " requested account: " + accountCode);
         for (Account a : accounts) {
             if (a.getAccountNumber().equals(accountCode)) {
-                LoggerConfig.logInfo("Account " + accountCode + " found for client " + name);
+                LoggerConfig.getInstance().logInfo("Account " + accountCode + " found for client " + name);
                 return a;
             }
         }
-        LoggerConfig.logError("Account not found for client " + name + ": " + accountCode, new Exception());
+        LoggerConfig.getInstance().logError("Account not found for client " + name + ": " + accountCode, new Exception());
         throw new IllegalArgumentException("Contul cu numarul " + accountCode + " nu a fost gasit.");
     }
 
@@ -50,17 +85,12 @@ public class Client {
                 ", address='" + address + '\'' +
                 ", accounts=" + accounts +
                 '}';
-        LoggerConfig.logInfo("Client info requested: " + info);
+        LoggerConfig.getInstance().logInfo("Client info requested: " + info);
         return info;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String nume) {
-        this.name = nume;
-        LoggerConfig.logInfo("Client name changed to: " + nume);
     }
 
     public String getAddress() {
@@ -69,5 +99,17 @@ public class Client {
 
     public ArrayList<Account> getAccounts() {
         return accounts;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }
