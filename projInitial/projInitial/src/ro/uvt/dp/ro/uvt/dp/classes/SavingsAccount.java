@@ -1,12 +1,14 @@
 package ro.uvt.dp.classes;
 
+import ro.uvt.dp.interfaces.InterestCalculator;
+
 public class SavingsAccount extends Account {
 
     public static final double SAVINGS_BONUS_RATE = 0.05;
 
-    public SavingsAccount(String numarCont, double suma, CurrencyType type) {
-        super(numarCont, suma, type);
-        LoggerConfig.getInstance().logInfo("Created new SavingsAccount: " + numarCont + " with initial amount " + suma + " " + type);
+    public SavingsAccount(String numarCont, double suma, InterestCalculator interestCalculator) {
+        super(numarCont, suma, interestCalculator);
+        LoggerConfig.getInstance().logInfo("Created new SavingsAccount: " + numarCont + " with initial amount " + suma);
     }
 
     @Override
@@ -17,9 +19,9 @@ public class SavingsAccount extends Account {
 
         LoggerConfig.getInstance().logInfo(
                 "Calculated savings interest for account " + getAccountNumber() +
-                ": base=" + baseInterest +
-                ", bonus=" + bonusInterest +
-                ", total=" + totalInterest
+                        ": base=" + baseInterest +
+                        ", bonus=" + bonusInterest +
+                        ", total=" + totalInterest
         );
 
         return totalInterest;
@@ -30,8 +32,8 @@ public class SavingsAccount extends Account {
         String info = "SavingsAccount{" +
                 "code='" + getAccountNumber() + '\'' +
                 ", amount=" + getAmount() +
-                ", currency=" + getCurrencyType() +
-                ", dailyInterest=" + getInterest() +
+                ", interest=" + getInterest() +
+                ", calculator=" + getInterestCalculator().getClass().getSimpleName() +
                 '}';
         LoggerConfig.getInstance().logInfo("SavingsAccount info requested: " + info);
         return info;

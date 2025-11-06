@@ -1,12 +1,14 @@
 package ro.uvt.dp.classes;
 
+import ro.uvt.dp.interfaces.InterestCalculator;
+
 public class InvestmentAccount extends Account {
 
     private static final double INVESTMENT_RATE = 0.15;
 
-    public InvestmentAccount(String numarCont, double suma, CurrencyType type) {
-        super(numarCont, suma, type);
-        LoggerConfig.getInstance().logInfo("Created new InvestmentAccount: " + numarCont + " with initial amount " + suma + " " + type);
+    public InvestmentAccount(String numarCont, double suma, InterestCalculator interestCalculator) {
+        super(numarCont, suma, interestCalculator);
+        LoggerConfig.getInstance().logInfo("Created new InvestmentAccount: " + numarCont + " with initial amount " + suma);
     }
 
     @Override
@@ -17,9 +19,9 @@ public class InvestmentAccount extends Account {
 
         LoggerConfig.getInstance().logInfo(
                 "Calculated investment interest for account " + getAccountNumber() +
-                ": base=" + baseInterest +
-                ", extra=" + investmentInterest +
-                ", total=" + totalInterest
+                        ": base=" + baseInterest +
+                        ", extra=" + investmentInterest +
+                        ", total=" + totalInterest
         );
 
         return totalInterest;
@@ -30,8 +32,8 @@ public class InvestmentAccount extends Account {
         String info = "InvestmentAccount{" +
                 "code='" + getAccountNumber() + '\'' +
                 ", amount=" + getAmount() +
-                ", currency=" + getCurrencyType() +
-                ", dailyInterest=" + getInterest() +
+                ", interest=" + getInterest() +
+                ", calculator=" + getInterestCalculator().getClass().getSimpleName() +
                 '}';
         LoggerConfig.getInstance().logInfo("InvestmentAccount info requested: " + info);
         return info;

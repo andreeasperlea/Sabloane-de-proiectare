@@ -18,7 +18,7 @@ public class BankTest {
     public void testAddClientIncreasesList() {
         Bank bank = new Bank("B001");
         Client c1 = new Client.Builder("Andrei", "Timisoara")
-                .addAccount(new BasicAccountFactory(), CurrencyType.RON, "RO001", 100.0)
+                .addAccount(new BasicAccountFactory(), new RONInterestCalculator(), "RO001", 100.0)
                 .build();
         bank.addClient(c1);
 
@@ -31,7 +31,7 @@ public class BankTest {
     public void testGetClientReturnsNullIfNotFound() {
         Bank bank = new Bank("B002");
         Client c = new Client.Builder("Andrei", "Timisoara")
-                .addAccount(new SavingsAccountFactory(), CurrencyType.RON, "RO001", 100.0)
+                .addAccount(new SavingsAccountFactory(), new RONInterestCalculator(), "RO001", 100.0)
                 .build();
         bank.addClient(c);
 
@@ -42,10 +42,10 @@ public class BankTest {
     public void testAddMultipleClientsAndRetrieve() {
         Bank bank = new Bank("B003");
         Client c1 = new Client.Builder("Andrei", "Timisoara")
-                .addAccount(new BasicAccountFactory(), CurrencyType.RON, "RO001", 100.0)
+                .addAccount(new BasicAccountFactory(), new RONInterestCalculator(), "RO001", 100.0)
                 .build();
         Client c2 = new Client.Builder("Maria", "Bucuresti")
-                .addAccount(new InvestmentAccountFactory(), CurrencyType.EUR, "EU001", 200.0)
+                .addAccount(new InvestmentAccountFactory(), new EURInterestCalculator(), "EU001", 200.0)
                 .build();
 
         bank.addClient(c1);
@@ -59,7 +59,7 @@ public class BankTest {
     public void testToStringContainsClientInfo() {
         Bank bank = new Bank("B004");
         Client c1 = new Client.Builder("Andrei", "Timisoara")
-                .addAccount(new SavingsAccountFactory(), CurrencyType.RON, "RO001", 100.0)
+                .addAccount(new SavingsAccountFactory(), new RONInterestCalculator(), "RO001", 100.0)
                 .build();
         bank.addClient(c1);
 
