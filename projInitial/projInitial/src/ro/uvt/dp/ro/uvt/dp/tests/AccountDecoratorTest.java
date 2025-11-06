@@ -13,7 +13,6 @@ public class AccountDecoratorTest {
 
     @Test
     public void testLifeInsuranceDecoratorAddsBonus() {
-        // Base account uses RON interest calculator
         Operations baseAccount = new Account("ACC100", 1000, new RONInterestCalculator());
 
         Operations insuredAccount = new LifeInsuranceDecorator(baseAccount);
@@ -21,7 +20,6 @@ public class AccountDecoratorTest {
         double baseTotal = baseAccount.getTotalAmount();
         double insuredTotal = insuredAccount.getTotalAmount();
 
-        // Life insurance adds +1% bonus
         assertEquals(baseTotal * 1.01, insuredTotal, 0.001,
                 "LifeInsuranceDecorator should increase total amount by 1%");
     }

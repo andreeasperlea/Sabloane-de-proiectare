@@ -54,7 +54,6 @@ public class Client {
                 '}';
     }
 
-    // ===== Builder Pattern =====
     public static class Builder {
         private final String name;
         private final String address;
